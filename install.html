@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Relap Widget</title>
+    <link href="./favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+    <meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+    <script src="./ace/ace.js"></script>
+</head>
+<body>
+<style>
+    body {
+        padding: 0 10%;
+    }
+
+    @media all and (orientation: portrait) {
+        body {
+            padding: 5px;
+        }
+    }
+
+    .mainWrapper {
+        height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        display: inline-block;
+        width: 10%;
+        flex-shrink: 0;
+    }
+
+    .relapForm {
+        margin-bottom: 20px;
+        background: #eee;
+        padding: 10px;
+        border-radius: 3px;
+    }
+
+    .relapInput {
+        width: 80%;
+        color: #555;
+        flex-grow: 1;
+    }
+
+    .relapInputWrapper {
+        margin-bottom: 10px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .code {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<div class="mainWrapper">
+
+    <div class="relapInputWrapper">
+        <label for="tokenInput">Токен: </label>
+        <input
+                class="relapInput"
+                id="tokenInput"
+                name="token"
+                oninput="setValues()"
+                placeholder="token"
+        />
+    </div>
+    <div class="relapInputWrapper">
+        <label for="urlInput">Url: </label>
+        <input class="relapInput" id="urlInput" name="url" oninput="setValues()" placeholder="url"/>
+    </div>
+    <div class="relapInputWrapper" style="flex-wrap: nowrap">
+        <label for="widgetIdInput">widgetID: </label>
+        <input
+                class="relapInput"
+                id="widgetIdInput"
+                name="widgetId"
+                oninput="setValues()"
+                placeholder="widgetID"
+        />
+    </div>
+
+    <div class="code" id="editor"></div>
+</div>
+
+<script>
+    const editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/html");
+
+    const widgetIdInput = document.querySelector("#widgetIdInput");
+    const urlInput = document.querySelector("#urlInput");
+    const tokenInput = document.querySelector("#tokenInput");
+    const textarea = document.querySelector("#editor");
+
+    const relapUrl = "https://relap.io/v7/relap.js";
+
+    const setValues = () => {
+        const widgetId = widgetIdInput.value;
+        const url = urlInput.value;
+        const token = tokenInput.value;
+
+        editor.setValue(`
+<div class="js-relap-adhoc-anchor" data-relap-id="${widgetId}"></div>
+<script>
+    (function () {
+      var w = window;
+      var d = w.document;
+      var url = '${url}';
+
+      try {
+          url = window.top.location.href;
+      } catch (e) {}
+
+      w.relapTasks = w.relapTasks || [];
+      w.relapTasks.push(function (api) {
+        function addWidget() {
+          var anchorEl = d.querySelector(
+            '.js-relap-adhoc-anchor[data-relap-id="${widgetId}"]'
+          );
+          if (!anchorEl) {
+            console.log("no anchor el found, exit");
+            return;
+          }
+          anchorEl.className = "";
+          api.addWidget({
+            cfgId: widgetId,
+            anchorEl: anchorEl,
+            events: {
+              onNoContent: function (obj) {
+                anchorEl.remove();
+              },
+              onReady: function (obj) {
+                // срабатывает при готовности виджета
+              },
+              onFolow: function (obj) {
+                // срабатывает при клике на плитку
+              },
+            },
+          });
+        }
+
+        if (api.isReady) return addWidget();
+
+        api
+          .init({
+            token: token,
+            url: url,
+          })
+          .then(addWidget);
+      });
+
+      if (!d.querySelector(".relap-runtime-iframe")) {
+        var iframe = d.createElement("iframe");
+        iframe.className = "relap-runtime-iframe";
+        iframe.style =
+          "position:absolute;top:-9999px;left:-9999px;visibility:hidden;";
+        iframe.srcdoc =
+          '<script data-relap-token="${token}" src="${relapUrl}"><' + "/script>";
+        d.body.appendChild(iframe);
+      }
+    })();
+</${'script>'}`)
+    }
+</script>
+
+</body>
+</html>
