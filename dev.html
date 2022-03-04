@@ -263,67 +263,10 @@
                     .then(addWidget);
             });
 
-
-            if (!d.querySelector('.relap-runtime-iframe')) {
-                const iframe = d.createElement('iframe');
-                iframe.className = 'relap-runtime-iframe';
-                iframe.srcdoc = '<script src="' + relapUrl + '" data-relap-token="' + token + '" + data-relap-url="'+ url +'"><' + '/script>';
-                d.body.appendChild(iframe);
-            }
-        })();
-    })();
-</script>
-
-<div id="second"></div>
-<script>
-    (function () {
-        const targetDiv = document.querySelector("#second");
-
-        (function() {
-            var w = window;
-            var d = w.document;
-
-            w.relapTasks = w.relapTasks || [];
-
-            w.relapTasks.push(function(api) {
-                function addWidget() {
-                    var anchorEl = targetDiv;
-                    if (!anchorEl) {
-                        console.log('no anchor el found, exit');
-                        return;
-                    }
-                    api.addWidget({
-                        cfgId: 'zzDPrWyswYd95w0N',
-                        anchorEl: anchorEl,
-                        events: {
-                            onNoContent: function(obj) {
-                                console.log('!!!!! relap noContent', obj);
-                                anchorEl.remove();
-                            },
-                            onReady: function(obj) {
-                                console.log('!!!!! relap Ready', obj);
-                            },
-                            onFollow: function(obj) {
-                                console.log('!!!!! relap Follow', obj);
-                            }
-                        },
-                    });
-                }
-                if (api.isReady) return addWidget();
-
-                api.init({
-                    token: token,
-                    url: new URL(url),
-                })
-                    .then(addWidget);
-            });
-
-
-            if (!d.querySelector('.relap-runtime-iframe')) {
-                const iframe = d.createElement('iframe');
-                iframe.className = 'relap-runtime-iframe';
-                iframe.srcdoc = '<script src="' + relapUrl + '" data-relap-token="' + token + '" + data-relap-url="'+ url +'"><' + '/script>';
-                d.body.appendChild(iframe);
+            if (!d.querySelector(".relap-runtime-iframe")) {
+                var s = d.createElement("script");
+                s.src = relapUrl;
+                d.body.appendChild(s);
             }
         })();
     })();
