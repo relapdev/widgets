@@ -266,6 +266,8 @@
             if (!d.querySelector(".relap-runtime-iframe")) {
                 var s = d.createElement("script");
                 s.src = relapUrl;
+                s.dataset.relapToken = token;
+                s.dataset.relapUrl = url;
                 d.body.appendChild(s);
             }
         })();
