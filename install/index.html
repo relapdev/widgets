@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Relap Install Code</title>
+    <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+    <meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="./styles.css" rel="stylesheet">
+    <script src="./ace/ace.js"></script>
+</head>
+<body>
+<div class="relapInputWrapper">
+    <label for="tokenInput">Токен: </label>
+    <input
+            class="relapInput"
+            id="tokenInput"
+            name="token"
+            oninput="setValues()"
+            placeholder="токен"
+    />
+</div>
+<div class="relapInputWrapper">
+    <label for="urlInput">Домен: </label>
+    <input class="relapInput" id="urlInput" name="url" oninput="setValues()" placeholder="домен без https://"/>
+</div>
+<div class="relapInputWrapper" style="flex-wrap: nowrap">
+    <label for="widgetIdInput">WidgetID: </label>
+    <input
+            class="relapInput"
+            id="widgetIdInput"
+            name="widgetId"
+            oninput="setValues()"
+            placeholder="widgetID"
+    />
+</div>
+
+<div class="code" id="editor"></div>
+
+<script src="./script.js"></script>
+</body>
+</html>
