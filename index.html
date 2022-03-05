@@ -5,11 +5,15 @@
     <title>Relap Widget</title>
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="./install/ace/ace.js"></script>
+    <script src="./install/getCode.js"></script>
 </head>
 <body>
 <style>
     body {
         padding: 0 10%;
+        font-family: Roboto, sans-serif;
     }
 
     @media all and (orientation:portrait) {
@@ -64,6 +68,10 @@
 
     .relap-runtime-iframe {
         position:absolute;top:-9999px;left:-9999px;visibility:hidden;
+    }
+
+    .code {
+        height: 350px;
     }
 </style>
 
@@ -131,20 +139,8 @@
     <button type="submit">Применить</button>
 </form>
 
-
-<div class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, deleniti mollitia officia omnis optio pariatur suscipit ullam! Accusantium alias at corporis dolorem maxime omnis quos vero voluptatibus? Animi, et, molestiae?</div>
-
-<div class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium asperiores assumenda at cupiditate deleniti dicta distinctio dolor, dolorum eaque enim fugiat id impedit nam non nulla quo sequi tempora voluptates?</div>
-
-<div class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium asperiores assumenda at cupiditate deleniti dicta distinctio dolor, dolorum eaque enim fugiat id impedit nam non nulla quo sequi tempora voluptates?</div>
-
-<div class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium asperiores assumenda at cupiditate deleniti dicta distinctio dolor, dolorum eaque enim fugiat id impedit nam non nulla quo sequi tempora voluptates?</div>
-
-<div class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, deleniti mollitia officia omnis optio pariatur suscipit ullam! Accusantium alias at corporis dolorem maxime omnis quos vero voluptatibus? Animi, et, molestiae?</div>
-
-<div class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium asperiores assumenda at cupiditate deleniti dicta distinctio dolor, dolorum eaque enim fugiat id impedit nam non nulla quo sequi tempora voluptates?</div>
-
-<div class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium asperiores assumenda at cupiditate deleniti dicta distinctio dolor, dolorum eaque enim fugiat id impedit nam non nulla quo sequi tempora voluptates?</div>
+<p class="lorem">Код установки (сам виджет ниже)</p>
+<div class="code" id="editor"></div>
 
 <div class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium asperiores assumenda at cupiditate deleniti dicta distinctio dolor, dolorum eaque enim fugiat id impedit nam non nulla quo sequi tempora voluptates?</div>
 
@@ -197,7 +193,7 @@
 
         const token  = queryValues.token;
         const widgetId  = queryValues.widgetId;
-        const url = decodeURIComponent(queryValues.url);
+        const url = decodeURIComponent(queryValues.url.includes('://') ? queryValues.url : `https://${queryValues.url}`);
         const relapUrl =
             decodeURIComponent(queryValues.relapJsSrc) ||
             "https://relap.io/v7/relap.js";
@@ -271,6 +267,11 @@
                 d.body.appendChild(iframe);
             }
         })();
+
+        const editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/html");
+        editor.setValue(getCode({ widgetId, url, token }));
     })();
 </script>
 
