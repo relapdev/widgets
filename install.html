@@ -5,12 +5,19 @@
     <title>Relap Install Code</title>
     <link href="./favicon.ico" rel="shortcut icon" type="image/x-icon"/>
     <meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <script src="./ace/ace.js"></script>
 </head>
 <body>
 <style>
     body {
-        padding: 0 10%;
+        padding: 2% 10%;
+        margin: 0;
+        font-family: Roboto, Arial, sans-serif;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
     }
 
     @media all and (orientation: portrait) {
@@ -20,9 +27,7 @@
     }
 
     .mainWrapper {
-        height: 90vh;
-        display: flex;
-        flex-direction: column;
+
     }
 
     label {
@@ -49,7 +54,6 @@
     }
 </style>
 
-<div class="mainWrapper">
 
     <div class="relapInputWrapper">
         <label for="tokenInput">Токен: </label>
@@ -58,15 +62,15 @@
                 id="tokenInput"
                 name="token"
                 oninput="setValues()"
-                placeholder="token"
+                placeholder="токен"
         />
     </div>
     <div class="relapInputWrapper">
-        <label for="urlInput">Url: </label>
-        <input class="relapInput" id="urlInput" name="url" oninput="setValues()" placeholder="url"/>
+        <label for="urlInput">Домен: </label>
+        <input class="relapInput" id="urlInput" name="url" oninput="setValues()" placeholder="домен без https://"/>
     </div>
     <div class="relapInputWrapper" style="flex-wrap: nowrap">
-        <label for="widgetIdInput">widgetID: </label>
+        <label for="widgetIdInput">WidgetID: </label>
         <input
                 class="relapInput"
                 id="widgetIdInput"
@@ -77,7 +81,6 @@
     </div>
 
     <div class="code" id="editor"></div>
-</div>
 
 <script>
     const editor = ace.edit("editor");
@@ -103,7 +106,7 @@
 
       var w = window;
       var d = w.document;
-      var url = '${url}';
+      var url = 'https://${url}';
 
       try {
           url = window.top.location.href;
