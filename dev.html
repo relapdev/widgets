@@ -8,6 +8,8 @@
 <div class="js-relap-adhoc-anchor" data-relap-id="Nco1zA3NiM40o8fH"></div>
 <script>
     (function () {
+        var widgetId = 'Nco1zA3NiM40o8fH';
+
         var w = window;
         var d = w.document;
         var url = 'http://relapdev.github.io';
@@ -20,7 +22,7 @@
         w.relapTasks.push(function (api) {
             function addWidget() {
                 var anchorEl = d.querySelector(
-                    '.js-relap-adhoc-anchor[data-relap-id="Nco1zA3NiM40o8fH"]'
+                    '.js-relap-adhoc-anchor[data-relap-id="'+ widgetId +'"]'
                 );
                 if (!anchorEl) {
                     console.log("no anchor el found, exit");
