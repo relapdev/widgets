@@ -103,8 +103,7 @@
         const url = urlInput.value;
         const token = tokenInput.value;
 
-        editor.setValue(`
-<div class="js-relap-adhoc-anchor" data-relap-id="${widgetId}"></div>
+        editor.setValue(`<div class="js-relap-adhoc-anchor" data-relap-id="${widgetId}"></div>
 <script>
     (function () {
       var w = window;
@@ -165,6 +164,8 @@
     })();
 </${'script>'}`)
     }
+
+    setValues();
 </script>
 
 </body>
