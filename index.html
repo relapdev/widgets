@@ -6,8 +6,6 @@
     <link href="./favicon.ico" rel="shortcut icon" type="image/x-icon"/>
     <meta content="width=device-width,initial-scale=1.0" name="viewport"/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <script src="./install/ace/ace.js"></script>
-    <script src="./install/getCode.js"></script>
 </head>
 <body>
 <style>
@@ -328,11 +326,6 @@
                 d.body.appendChild(iframe);
             }
         })();
-
-        const editor = ace.edit("editor");
-        editor.setTheme("ace/theme/monokai");
-        editor.session.setMode("ace/mode/html");
-        editor.setValue(getCode({widgetId, url: new URL(url).host, token}));
     })();
 </script>
 
