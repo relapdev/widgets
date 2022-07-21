@@ -294,11 +294,12 @@
                             onNoContent: function (obj) {
                                 console.log('!!!!! relap noContent', obj);
                                 someNotExistingFuncNoContent();
+
                                 anchorEl.remove();
                             },
                             onReady: function (obj) {
                                 console.log('!!!!! relap Ready', obj);
-                                someNotExistingFunc();
+                                clearTimeout(timeout);
                             },
                             onFollow: function (obj) {
                                 console.log('!!!!! relap Follow', obj);
