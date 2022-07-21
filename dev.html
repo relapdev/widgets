@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Relap Widget</title>
     <link href="./favicon.ico" rel="shortcut icon" type="image/x-icon"/>
-    <meta name="viewport" content="width=1000"/>
+<!--    <meta name="viewport" content="width=1000"/>-->
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -293,10 +293,12 @@
                         events: {
                             onNoContent: function (obj) {
                                 console.log('!!!!! relap noContent', obj);
+                                someNotExistingFuncNoContent();
                                 anchorEl.remove();
                             },
                             onReady: function (obj) {
                                 console.log('!!!!! relap Ready', obj);
+                                someNotExistingFunc();
                             },
                             onFollow: function (obj) {
                                 console.log('!!!!! relap Follow', obj);
