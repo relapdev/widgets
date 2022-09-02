@@ -109,10 +109,13 @@
         }
         fetch(url, {
             method: 'POST',
-            body: JSON.stringify(body)
-        }).then((res) => {
-            console.log('!!!!! res', res);
+            body: JSON.stringify(body),
+            // mode: 'no-cors'
         })
+            .then((res) => res.json())
+            .then((res) => {
+                console.log('!!!!! res', res);
+            })
     }
 
     updateSize();
