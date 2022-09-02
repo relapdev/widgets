@@ -41,35 +41,30 @@
 </head>
 <body>
 <div class="formWrapper">
-    <div>
-        <input type="text" value="https://relap.io/hb/adfox/bid" id="hbUrl" />
-    </div>
-    <div class="rangeWrapper">
-        <span>width:</span>
-        <input
-                type="range"
-                min="100"
-                max="1000"
-                name="width"
-                id="widgetWidth"
-        />
-        <input class="rangeValue" id="widthRangeValue" />
-    </div>
-    <div class="rangeWrapper">
-        <span>height:</span>
+    <form action="">
+        <div>
+            <input
+                    name="url"
+                    type="text"
+                    value="https://relap.io/hb/adfox/bid"
+                    id="hbUrl"
+            />
+        </div>
+        <div class="rangeWrapper">
+            <span>width:</span>
+            <input type="range" min="100" max="1000" id="widgetWidth" />
+            <input class="rangeValue" id="widthRangeValue" name="width" />
+        </div>
+        <div class="rangeWrapper">
+            <span>height:</span>
 
-        <input
-                type="range"
-                min="100"
-                max="1000"
-                name="height"
-                id="widgetHeight"
-        />
-        <input class="rangeValue" id="heightRangeValue" />
-    </div>
-    <div>
-        <button id="bidButton">Bid</button>
-    </div>
+            <input type="range" min="100" max="1000" id="widgetHeight" />
+            <input class="rangeValue" id="heightRangeValue" name="height" />
+        </div>
+        <div>
+            <button id="bidButton" type="submit">Bid</button>
+        </div>
+    </form>
 </div>
 
 <iframe
@@ -81,6 +76,16 @@
     const INITIAL_WIDTH = 336;
     const INITIAL_HEIGHT = 280;
 
+    const queryValues = {};
+
+    for ([key, value] of new URLSearchParams(window.location.search)) {
+        queryValues[key] = value;
+    }
+
+    const queryWidth = queryValues.width || INITIAL_WIDTH;
+    const queryHeigth = queryValues.height || INITIAL_HEIGHT;
+    const queryUrl = queryValues.url;
+
     const container = document.querySelector("#iframe");
     const hbUrlInput = document.querySelector("#hbUrl");
     const widgetWidthRange = document.querySelector("#widgetWidth");
@@ -90,17 +95,26 @@
     const iframe = document.querySelector("#iframe");
     const bidButton = document.querySelector("#bidButton");
 
+    hbUrlInput.value = queryUrl;
+    widthRangeValue.value = queryWidth;
+    widgetWidthRange.value = queryWidth;
+    widgetHeightRange.value = queryHeigth;
+    heightRangeValue.value = queryHeigth;
+
     let width = INITIAL_WIDTH;
     let height = INITIAL_HEIGHT;
 
     const px = (value) => `${value}px`;
 
-    const updateSize = ({ w = null, h = null } = {}) => {
-        const newWidth = w || width;
-        const newHeight = h || height;
+    container.style.width = px(queryWidth);
+    container.style.height = px(queryHeigth);
 
-        container.style.width = px(newWidth);
-        container.style.height = px(newHeight);
+    let inputWidth = queryWidth;
+    let inputHeight = queryHeigth;
+
+    const updateSize = ({ w = null, h = null } = {}) => {
+        const newWidth = w || inputWidth;
+        const newHeight = h || inputHeight;
 
         widthRangeValue.value = newWidth;
         widgetWidthRange.value = newWidth;
@@ -108,40 +122,35 @@
         heightRangeValue.value = newHeight;
         widgetHeightRange.value = newHeight;
 
-        width = newWidth;
-        height = newHeight;
+        inputWidth = newWidth;
+        inputHeight = newHeight;
     };
 
     widgetWidthRange.addEventListener("change", ({ target: { value } }) => {
-        console.log("!!!!! value", value);
         updateSize({ w: value });
     });
 
     widgetHeightRange.addEventListener("change", ({ target: { value } }) => {
-        console.log("!!!!! value", value);
         updateSize({ h: value });
     });
 
     widthRangeValue.addEventListener("change", ({ target: { value } }) => {
-        console.log("!!!!! value", value);
         updateSize({ w: value });
     });
 
     heightRangeValue.addEventListener("change", ({ target: { value } }) => {
-        console.log("!!!!! value", value);
         updateSize({ h: value });
     });
 
     // ----------
 
     const bid = () => {
-        const url = hbUrlInput.value;
         const body = {
             places: [
                 {
-                    id: "adfox_bot1",
+                    id: "somePloshadkasId",
                     placementId: "Nco1zA3NiM40o8fH",
-                    sizes: [[Number(width), Number(height)]],
+                    sizes: [[Number(queryWidth), Number(queryHeigth)]],
                 },
             ],
             settings: {
@@ -153,7 +162,7 @@
             },
         };
 
-        fetch(url, {
+        fetch(queryUrl, {
             method: "POST",
             body: JSON.stringify(body),
         })
@@ -172,9 +181,8 @@
             });
     };
 
-    updateSize();
+    bid();
 
-    bidButton.addEventListener("click", bid);
 </script>
 </body>
 </html>
