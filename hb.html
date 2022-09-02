@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <input type="text" value="https://relap.io/hb/adfox/bid" id="hbUrl"/>
+</div>
+<div>
+    <input type="range" min="100" max="1000" name="width" id="widgetWidth"/>
+    <input id="widthRangeValue"/>
+</div>
+<div>
+    <input type="range" min="100" max="1000" name="height" id="widgetHeight"/>
+    <input id="heightRangeValue"/>
+</div>
+<div>
+    <button id="bidButton">Bid</button>
+</div>
+
+<div id="contaner" style="border: 1px solid grey;"></div>
+
+
+<script>
+    const INITIAL_WIDTH = 250;
+    const INITIAL_HEIGHT = 300;
+
+    const container = document.querySelector('#contaner')
+    const hbUrlInput = document.querySelector('#hbUrl');
+    const widgetWidthRange = document.querySelector('#widgetWidth');
+    const widgetHeightRange = document.querySelector('#widgetHeight');
+    const widthRangeValue = document.querySelector('#widthRangeValue');
+    const heightRangeValue = document.querySelector('#heightRangeValue');
+    const bidButton = document.querySelector('#bidButton');
+
+    let width = INITIAL_WIDTH;
+    let height = INITIAL_HEIGHT;
+
+    console.log('!!!!! width', width);
+    console.log('!!!!! height', height);
+
+    const px = (value) => `${value}px`;
+
+    const updateSize = ({w = null, h = null} = {}) => {
+        const newWidth = w || width;
+        const newHeight = h || height;
+
+        console.log('!!!!! w, h', {w, h});
+
+        container.style.width = px(newWidth);
+        container.style.height = px(newHeight);
+
+        widthRangeValue.value = newWidth;
+        widgetWidthRange.value = newWidth;
+
+        heightRangeValue.value = newHeight;
+        widgetHeightRange.value = newHeight;
+
+        width = newWidth;
+        height = newHeight;
+    }
+
+    widgetWidthRange.addEventListener('change', ({target: {value}}) => {
+        console.log('!!!!! value', value);
+        updateSize({w: value});
+    })
+
+    widgetHeightRange.addEventListener('change', ({target: {value}}) => {
+        console.log('!!!!! value', value);
+        updateSize({h: value});
+    })
+
+    widthRangeValue.addEventListener('change', ({target: {value}}) => {
+        console.log('!!!!! value', value);
+        updateSize({w: value});
+    })
+
+    heightRangeValue.addEventListener('change', ({target: {value}}) => {
+        console.log('!!!!! value', value);
+        updateSize({h: value});
+    })
+
+    // ----------
+
+    const bid = () => {
+        const url = hbUrlInput.value;
+        const body = {
+            places: [
+                {
+                    "id": "adfox_bot1",
+                    "placementId": "z5aWc2qr8wjyCgoK",
+                    "sizes": [
+                        [
+                            300,
+                            250
+                        ]
+                    ]
+                },
+            ],
+            settings: {
+                currency: "RUB",
+                windowSize: {
+                    width,
+                    height
+                }
+            }
+        }
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(body)
+        }).then((res) => {
+            console.log('!!!!! res', res);
+        })
+    }
+
+    updateSize();
+
+    bidButton.addEventListener('click', bid)
+
+</script>
+
+</body>
+</html>
