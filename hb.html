@@ -73,6 +73,7 @@
 ></iframe>
 
 <script>
+    const INITIAL_URL = 'https://relap.io/hb/adfox/bid';
     const INITIAL_WIDTH = 336;
     const INITIAL_HEIGHT = 280;
 
@@ -84,7 +85,7 @@
 
     const queryWidth = queryValues.width || INITIAL_WIDTH;
     const queryHeigth = queryValues.height || INITIAL_HEIGHT;
-    const queryUrl = queryValues.url;
+    const queryUrl = queryValues.url || INITIAL_URL;
 
     const container = document.querySelector("#iframe");
     const hbUrlInput = document.querySelector("#hbUrl");
