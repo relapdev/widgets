@@ -31,7 +31,7 @@
             display: flex;
             align-items: center;
             gap: 20px;
-            padding: 10px 0
+            padding: 10px 0;
         }
 
         span {
@@ -65,14 +65,17 @@
                 name="height"
                 id="widgetHeight"
         />
-        <input  class="rangeValue" id="heightRangeValue" />
+        <input class="rangeValue" id="heightRangeValue" />
     </div>
     <div>
         <button id="bidButton">Bid</button>
     </div>
 </div>
 
-<iframe id="iframe" srcdoc="" style="border: 1px solid grey"></iframe>
+<iframe
+        id="iframe"
+        style="border: 1px solid grey; margin: 0; padding: 0"
+></iframe>
 
 <script>
     const INITIAL_WIDTH = 336;
@@ -158,11 +161,14 @@
             .then(({ bids }) => {
                 console.log("!!!!! bids", bids);
 
-                iframe.contentWindow.document.body.innerHTML = bids[0]?.displayCode;
-                iframe.contentWindow.document.body.style.margin = '0';
-                iframe.contentWindow.document.body.style.padding = '0';
+                iframe.srcdoc = bids[0]?.displayCode;
 
-                console.log('!!!!! iframe.contentWindow.document.body', iframe.contentWindow.document.body);
+                setTimeout(() => {
+                    iframe.contentWindow.document.body.style.margin = "0";
+                    iframe.contentWindow.document.body.style.padding = "0";
+                    document.body.style.padding = "0";
+                    document.body.style.padding = "0";
+                }, 100);
             });
     };
 
