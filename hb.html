@@ -158,6 +158,9 @@
                 console.log("!!!!! bids", bids);
 
                 iframe.srcdoc = bids[0]?.displayCode;
+
+                iframe.contentWindow.document.body.style.margin = '0';
+                iframe.contentWindow.document.body.style.padding = '0';
             });
     };
 
