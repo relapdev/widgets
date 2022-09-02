@@ -72,7 +72,7 @@
     </div>
 </div>
 
-<iframe id="iframe" style="border: 1px solid grey"></iframe>
+<iframe id="iframe" src="about:blanc" style="border: 1px solid grey"></iframe>
 
 <script>
     const INITIAL_WIDTH = 336;
@@ -149,6 +149,7 @@
                 },
             },
         };
+
         fetch(url, {
             method: "POST",
             body: JSON.stringify(body),
@@ -157,10 +158,11 @@
             .then(({ bids }) => {
                 console.log("!!!!! bids", bids);
 
-                iframe.srcdoc = bids[0]?.displayCode;
-
+                iframe.contentWindow.document.body.innerHTML = bids[0]?.displayCode;
                 iframe.contentWindow.document.body.style.margin = '0';
                 iframe.contentWindow.document.body.style.padding = '0';
+
+                console.log('!!!!! iframe.contentWindow.document.body', iframe.contentWindow.document.body);
             });
     };
 
