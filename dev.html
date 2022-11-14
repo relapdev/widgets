@@ -105,7 +105,15 @@
 
 </style>
 
-<form action="" class="relapForm">
+<script>
+    const handleSubmit = () => {
+        const ym = window.ym || (() => {});
+
+        ym(91181396,'reachGoal','form_submit', {URL: document.location.href})
+    }
+</script>
+
+<form action="" class="relapForm" onsubmit="handleSubmit">
     <div class="requiredFields">
         <div class="relapInputWrapper">
             <label for="tokenInput">Токен: </label>
