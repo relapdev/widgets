@@ -107,7 +107,13 @@
 
 <script>
     const handleSubmit = () => {
-        yaCounter91181396.reachGoal('form_submit', {URL: 'https://trololo.ru'});
+        yaCounter91181396.reachGoal('form_submit', {URL: 'https://trololo.ru/yaCounter'});
+
+        ym(91181396, 'reachGoal', 'form_submit', {URL: 'https://trololo.ru/ym'});
+
+        ym(91181396,'reachGoal','js_custom_form_submit',{URL: 'https://trololo.ru/ym', someData: 1} )
+        yaCounter91181396.reachGoal('js_custom_form_submit',{URL: 'https://trololo.ru/yaCounter', someData: 2} )
+
         console.log('!!!!! submit');
     }
 </script>
