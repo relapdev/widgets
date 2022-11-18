@@ -11,7 +11,6 @@ var adperfobj = {
     ,clicktrackers : []
     ,publisherclick : '[PUBLISHER_TRACKING_URL]'
 };
-// document.write('<scr'+'ipt async src="https://cstatic.weborama.fr/js/advertiserv2/adperf_launch_1.0.0_scrambled.js"></scr'+'ipt>');
 
 var weboramaAdvertiserScript = document.createElement('script');
 weboramaAdvertiserScript.async = true;
