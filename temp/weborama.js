@@ -11,4 +11,4 @@ var adperfobj = {
     ,clicktrackers : []
     ,publisherclick : '[PUBLISHER_TRACKING_URL]'
 };
-document.write('<scr'+'ipt language="javascript" src="https://cstatic.weborama.fr/js/advertiserv2/adperf_launch_1.0.0_scrambled.js"></scr'+'ipt>');
+document.write('<scr'+'ipt async src="https://cstatic.weborama.fr/js/advertiserv2/adperf_launch_1.0.0_scrambled.js"></scr'+'ipt>');
