@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Iframe code</title>
+</head>
+<body>
+
+<label for="code">Код:</label>
+<div>
+  <textarea id="code" ></textarea>
+</div>
+<div>
+  <button id="button">Применить</button>
+</div>
+
+<iframe id="iframe" ></iframe>
+
+<script>
+  const code = document.querySelector('#code')
+  const button = document.querySelector('#button')
+  const iframe = document.querySelector('#iframe')
+
+  const updateCode = () => {
+    iframe.contentWindow.document.body.innerHTML = '';
+    iframe.srcdoc = code.value;
+  }
+
+  button.addEventListener('click', updateCode);
+</script>
+
+</body>
+</html>
