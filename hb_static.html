@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!--[%-->
+<!--rec = ctx.rec_item;-->
+<!--url_obj = rec.url_object();-->
+<!--click_url = ctx.click_url || url_obj.url();-->
+<!--title = url_obj.title();-->
+
+<!--on_load_images = url_obj.meta('on_load_images') || rec.meta('adroom_campaign').meta('on_load_images');-->
+<!--IF on_load_images;-->
+<!--temp = preprocess_tracking_pixels( from_json(on_load_images) );-->
+<!--on_load_images = [];-->
+<!--FOR item IN temp; on_load_images.push(item.src); END;-->
+<!--ELSE;-->
+<!--on_load_images = [];-->
+<!--END;-->
+
+<!--on_show_images = url_obj.meta('on_show_images') || rec.meta('adroom_campaign').meta('on_show_images');-->
+<!--IF on_show_images;-->
+<!--temp = preprocess_tracking_pixels( from_json(on_show_images) );-->
+<!--on_show_images = [];-->
+<!--FOR item IN temp; on_show_images.push(item.src); END;-->
+<!--END;-->
+
+<!--on_click_images = url_obj.meta('on_click_images') || rec.meta('adroom_campaign').meta('on_click_images');-->
+<!--IF on_click_images;-->
+<!--temp = preprocess_tracking_pixels( from_json(on_click_images) );-->
+<!--on_click_images = [];-->
+<!--FOR item IN temp; on_click_images.push(item.src); END;-->
+<!--END;-->
+<!-- -%] -->
+<a href="https://relap.io"
+   style="display: block; position: relative; overflow: hidden; width: 400px; height: 250px; "
+   target="_blank"><img src="https://i.pinimg.com/originals/16/ac/78/16ac78b475113c46947483efa8b70b56.jpg"
+                        width="400" height="250"
+                        style="display: block; width: 400px; height: 250px; object-fit: cover; vertical-align: middle;"/>
+    <div style="position: absolute; bottom: 36px; left: 0; width: 100%;"><span
+            style="color: white !important; font: bold 18px/1.42 Helvetica, Sans-Serif !important; letter-spacing: -1px; background: rgba(0, 0, 0, 0.7); padding: 10px; display: inline-block; max-width: 70%">[% title|raw %]</span>
+    </div>
+</a><img
+        src="[% c.url_for('hb_adfox_nurl').to_abs() %]?event=imp&r=[% ctx.sbrid|raw %]&[% c.session_secret_param() %]=[% c.get_session_secret() %]"
+        style="width: 1px; height: 1px; position: absolute; top: 0px; left: 0px;"/>
+<script>(function () {
+    var el = window.frameElement;
+    var global = window.parent;
+    if (!el || !global) return;
+
+    ;var cfg = {
+            "tp": 25, "onShow": []
+        }
+    ;
+    if (!cfg.onShow) cfg.onShow = [];
+
+    function checkVisible(rect, windowWidth, windowHeight, thresholdPercent) {
+        var top = rect.top;
+        var left = rect.left;
+        var width = rect.right - rect.left;
+        var height = rect.bottom - rect.top;
+        var visibleWidth = Math.min(windowWidth - left, width) + (left < 0 ? left : 0);
+        if (visibleWidth < 0) visibleWidth = 0;
+        var visibleHeight = Math.min(windowHeight - top, height) + (top < 0 ? top : 0);
+        if (visibleHeight < 0) visibleHeight = 0;
+        var visibleArea = visibleHeight * visibleWidth;
+        var recArea = width * height;
+        var visiblePercent = (visibleArea / recArea) * 100;
+        if (visiblePercent >= thresholdPercent) return !0;
+        return !1
+    }
+
+    function executeOnVisible() {
+        var onShowArr = cfg.onShow || [];
+        for (var i = 0; i < onShowArr.length; i++) {
+            var imgEl = new Image;
+            imgEl.src = onShowArr[i]
+        }
+    }
+
+    function onWindowScroll() {
+        var isVisible = checkVisible(el.getBoundingClientRect(), global.document.documentElement.clientWidth, global.document.documentElement.clientHeight, cfg.tp);
+        if (!isVisible) return;
+        executeOnVisible();
+        global.removeEventListener('scroll', onWindowScroll)
+    }
+
+    global.addEventListener('scroll', onWindowScroll, !1);
+    onWindowScroll()
+})();
+!function (e) {
+    var c = e.createElement("script");
+    c.src = "https://[% hostname %]/hb/ft_check", e.head.appendChild(c)
+}(document);</script>
+
+
+</body>
+</html>
