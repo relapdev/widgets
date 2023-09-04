@@ -6,9 +6,50 @@
 </head>
 <body>
 
-<script async src="https://ad.mail.ru/static/ads-async.js"></script>
-<ins class="mrg-tag" style="display:inline-block;text-decoration: none;" data-ad-client="ad-1228405" data-ad-slot="1228405"></ins>
-<script>(MRGtag = window.MRGtag || []).push({})</script>
+<form>
+<input type="text" name="slot_id" placeholder="slot id" id="slotID" />
+<button id="apply">Apply</button>
+</form>
+
+<div id="root"></div>
+
+<script>
+    (function() {
+        const searchParams = new URLSearchParams(document.location.search);
+        const slotId = searchParams.get('slot_id');
+
+        const root = document.querySelector('#root');
+        const slotIDInput = document.querySelector('#slotID');
+
+        if (!slotId) {
+            root.innerHTML = 'Enter slot id';
+            return;
+        }
+
+        slotIDInput.value = slotId;
+
+
+        const ins = document.createElement('ins');
+
+        ins.className = 'mrg-tag';
+        ins.style = {display: 'inline-block', textDecoration: 'none'};
+        ins.dataset.adClient = `ad-${slotID}`;
+        ins.dataset.adSlot = slotId;
+
+
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://ad.mail.ru/static/ads-async.js'
+
+        root.appendChild(script);
+        root.appendChild(ins);
+        (MRGtag = window.MRGtag || []).push({});
+    })()
+</script>
+
+<!--<script async src="https://ad.mail.ru/static/ads-async.js"></script>-->
+<!--<ins class="mrg-tag" style="display:inline-block;text-decoration: none;" data-ad-client="ad-1228405" data-ad-slot="1228405"></ins>-->
+<!--<script>(MRGtag = window.MRGtag || []).push({})</script>-->
 
 </body>
 </html>
