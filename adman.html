@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Adman3 eject demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.36.2/ace.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+        body {
+            letter-spacing: 0;
+            font-weight: 400;
+            font-style: normal;
+            color: rgba(0, 0, 0, 0.8);
+            font-size: 1.125rem;
+            line-height: 1.4;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            margin: 0;
+        }
+        .adm-right-bottom-wrap {
+            background-color: #1c77ff88;
+            fill: red;
+            border-radius: var(--adm-control-radius, 8px);
+            padding: 0 8px;
+            /*backdrop-filter: saturate(100);*/
+            gap: 2px !important;
+        }
+        .adm-right-bottom-wrap:hover {
+            background-color: #1c77ffee;
+        }
+
+        .adm-right-bottom-wrap > div {
+            background-color: transparent !important;
+        }
+
+        h4 {
+            font-size: 90%;
+            line-height: 1.3;
+            color: steelblue;
+        }
+
+        .container {
+            /*max-width: 46.25rem;*/
+            margin: 0 auto;
+            padding: 0 2.5rem;
+            background: white;
+            position: relative;
+            border-radius: 10px;
+            z-index: 5;
+        }
+
+        .content {
+            word-break: break-word;
+            word-wrap: break-word;
+            box-sizing: border-box;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .content__title {
+            font-family: "Source Sans Pro", "Lucida Grande", "Lucida Sans Unicode",
+            "Lucida Sans", Geneva, Arial, sans-serif;
+            color: rgba(0, 0, 0, 0.8);
+            font-weight: 700;
+            font-style: normal;
+            font-size: 2.5rem;
+            margin-left: -2.5px;
+            line-height: 1.04;
+            letter-spacing: -0.028em;
+        }
+
+        .content__subtitle {
+            margin: 5px 0 22px 0;
+            font-family: "Source Sans Pro", "Lucida Grande", "Lucida Sans Unicode",
+            "Lucida Sans", Geneva, Arial, sans-serif;
+            color: steelblue;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 1.5rem;
+            margin-left: -1.69px;
+            line-height: 1.22;
+            letter-spacing: -0.022em;
+        }
+
+        .content__text,
+        .content__link {
+            margin-top: 29px;
+            font-family: "Source Serif Pro", Georgia, Cambria, "Times New Roman",
+            Times, serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 1.313rem;
+            line-height: 1.58;
+            letter-spacing: -0.003em;
+        }
+
+        .content__video-dscr {
+            margin-top: 30px;
+            font-family: "Source Sans Pro", "Lucida Grande", "Lucida Sans Unicode",
+            "Lucida Sans", Geneva, Arial, sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 1.5rem;
+            margin-left: -1.5px;
+            line-height: 1.22;
+            letter-spacing: -0.018em;
+        }
+
+        .content__quote {
+            margin-top: 38px;
+            font-family: "Source Serif Pro", Georgia, Cambria, "Times New Roman",
+            Times, serif;
+            font-weight: 400;
+            font-style: italic;
+            font-size: 1.313rem;
+            line-height: 1.58;
+            letter-spacing: -0.003em;
+            border-left: 0.188em solid rgba(0, 0, 0, 0.8);
+            padding-left: 1.25em;
+            margin-left: -23px;
+            padding-bottom: 0.125em;
+        }
+
+        .content__link {
+            color: inherit;
+            text-decoration: none;
+            background-image: -webkit-linear-gradient(
+                    top,
+                    rgba(0, 0, 0, 0.6) 50%,
+                    rgba(0, 0, 0, 0) 50%
+            );
+            background-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0.6) 50%,
+                    rgba(0, 0, 0, 0) 50%
+            );
+            background-repeat: repeat-x;
+            background-size: 2px 0.1em;
+            background-position: 0 1.07em;
+        }
+
+        .content__link:hover,
+        .content__link:active {
+            outline: none;
+        }
+
+        .content__video {
+            margin: 44px 0;
+            text-align: center;
+            float: none;
+            clear: both;
+            width: 100%;
+            position: relative;
+            padding-bottom: 56.25%;
+            padding-top: 25px;
+            height: 0;
+        }
+
+        .content__video iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .conent__image {
+            width: 100%;
+            height: 100%;
+        }
+
+        @media (max-width: 767px) {
+            .container {
+                padding: 1.25em;
+            }
+            .content__title {
+                font-size: 2rem;
+                margin: 25px 0 0 -2px;
+                line-height: 1.04;
+                letter-spacing: -0.028em;
+            }
+            .content__subtitle {
+                font-size: 1.438rem;
+                margin: 5px 0 22px -1.44px;
+                line-height: 1.22;
+                letter-spacing: -0.022em;
+            }
+            .content__text {
+                font-size: 1.125rem;
+                line-height: 1.58;
+                letter-spacing: -0.004em;
+                margin-top: 0;
+            }
+            .content__link {
+                font-size: 1.125rem;
+                background-size: 2px 1px;
+                background-position: 0 1.03em;
+            }
+        }
+
+        .editorWrapper {
+            position: relative;
+            width: 100%;
+            height:200px;
+        }
+
+        #editor {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        #update_adman_settings {
+            padding: 10px;
+            width: 100%;
+            margin-top: 8px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="editorWrapper">
+<div id="editor">
+
+</div>
+</div>
+
+<button id="update_adman_settings" >Update</button>
+
+<form action="" id="formConfig"><textarea name="config" id="config_ta" style="display: none"></textarea></form>
+
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/json");
+
+
+    editor.session.on('change', () => {
+        const value = editor.getValue();
+    })
+
+    const configTA = document.querySelector('#config_ta');
+    const formConfig = document.querySelector('#formConfig');
+    const updateButton = document.querySelector('#update_adman_settings');
+    updateButton.addEventListener('click', () => {
+        configTA.value = editor.getValue();
+        formConfig.submit();
+    })
+
+    const queryValues = {};
+
+    for ([key, value] of new URLSearchParams(window.location.search)) {
+        queryValues[key] = value;
+    }
+
+    let config = {
+        eject: {
+            enabled: true,
+            position: "left",
+            w: 300,
+            allowClose: true,
+            allowCloseDelay: 10,
+            mode: "normal"
+        },
+    }
+
+    if(queryValues['config']) {
+        try {
+            config = JSON.parse(queryValues['config'])
+        } catch (e) {
+            alert('Invalid config')
+        }
+    }
+
+    editor.setValue(JSON.stringify(config));
+
+    configTA.value = JSON.stringify(config);
+
+    window.EDITOR = editor;
+</script>
+
+<section class="content">
+    <div class="container" id="content-container">
+        <h1 class="content__title">
+            Новые возможности VK-Рекламы с плеером AdMan 3
+        </h1>
+        <p class="content__text">
+            Объем российского рынка интернет-рекламы и маркетинга по итогам 2023
+            года достиг 478,8 млрд рублей, увеличившись на 22% в сравнении с
+            предыдущим годом, когда был зафиксирован спад на 10%. Об этом
+            свидетельствуют данные Российской ассоциации электронных коммуникаций
+            (РАЭК), опубликованные в середине декабря 2023 года. Одной из
+            лидирующих площадок является VK.
+        </p>
+        <div id="nr-ad"></div>
+        <p class="content__text">
+            Согласно исследованию, подготовленному Роскомнадзором совместно с
+            Ассоциацией коммуникационных агентств России и Ассоциацией развития
+            интерактивной рекламы, в 2023 году больше всего средств на
+            интернет-рекламу направили рекламодатели, занимающиеся розничной и
+            оптовой торговлей (25%), связью и информацией (19%), финансы и
+            страхование (9%), строительство, операции с недвижимостью,
+            здравоохранение и социальные услуги (по 3%).
+        </p>
+        <p class="content__text">
+            Для распространения рекламы использовалось 49 тысяч площадок
+            рекламораспространителей – сайты в сети Интернет, мобильные
+            приложения, аккаунты в социальных сетях и мессенджерах, смарт-ТВ. За
+            первые 9 месяцев 2023 года количество уникальных активных
+            рекламодателей в Рунете превысило 940 тыс. В основном востребованы
+            баннеры и текстово-графические блоки. Объем всей учтенной
+            Роскомнадзором интернет-рекламы составил 400 млрд руб. за девять
+            месяцев 2023 г.
+        </p>
+        <h2 class="content__video-dscr">VK Реклама</h2>
+        <p class="content__text">
+            VK Реклама — рекламная платформа, которая объединяет технологии
+            ВКонтакте и myTarget, использует улучшенные алгоритмы и новые
+            инструменты. Запуск рекламы через новую платформу позволяет продвигать
+            сайты и приложения одновременно в соцсетях ВКонтакте, Одноклассники,
+            проектах Mail.ru, на сайте объявлений Юла и в рекламной сети VK.
+            Рекламную платформу VK могут использовать как пользователи, которые
+            уже запустили рекламу в ВКонтакте через рекламный кабинет этой соцсети
+            или myTarget, так и рекламодатели, которые будут запускать рекламу
+            впервые.
+        </p>
+        <h2 class="content__subtitle">
+            В 2023 году в VK-Реклама появился рекламный блок InPage
+        </h2>
+        <p class="content__text">
+            Для сайтов партнеров рекламной сети VK доступно использование новых
+            рекламных блоков InPage, что позволяет им увеличить доход от
+            монетизации своих ресурсов. Этот вид рекламы обычно используется на
+            сайтах с фильмами и на развлекательных статейных сайтах. Рекламный
+            плеер встраивается в какую-то часть страницы и реклама сама
+            включается, как только в видимой области браузера оказывается более
+            половины площади рекламного блока. Есть реклама как со звуком, так и
+            без него. Поддерживается как видео-реклама, так и реклама иных
+            форматов (текстово-графические баннеры, VideoMotion и др.).
+        </p>
+        <h2 class="content__video-dscr">Плеер AdMan 3</h2>
+        <p class="content__text">
+            Показ рекламы на странице обычно осуществляется специальными
+            инструментами - рекламными плеерами. AdMan 3 - плеер для
+            воспроизведения на web-страницах видео и html рекламы, призванный
+            заменить уже существующие решения (AdManHTML SDK, rb_ext, nr-player).
+            Важной характеристикой AdMan 3 является возможность настройки внешнего
+            вида плеера и направленность на обеспечение максимального комфорта
+            пользователя при просмотре рекламы (плавность протекания визуальных
+            этапов работы плеера). В архитектуру плеера заложены механизмы
+            обеспечения максимальной эффективности показа рекламы на web-страницы.
+        </p>
+        <div id="player-wrapper-2">
+            <video
+                    id="adcontainer-2"
+                    style="width: 100%; height: 100%"
+                    controls
+                    poster="https://d2e111jq13me73.cloudfront.net/sites/default/files/styles/ratio_16_9_large/public/video-thumbnails/avengers-endgame-site1.jpg"
+                    src="https://d1pmarobgdhgjx.cloudfront.net/review/Avengers_Endgame_Site.mp4"
+            ></video>
+        </div>
+        <p class="content__text chv">
+            Одним из таких механизмов является начало показа видео рекламы только
+            после попадания в зону видимости пользователя более половины
+            рекламного блока и приостановка показа в случае потери фокуса страницы
+            (переключение на другую вкладку в браузере или на другое приложение)
+            или ухода более половины блока из зоны видимости. Также в целях
+            обеспечения комфорта пользователя поддерживается три типоразмера
+            элементов управления (small, medium и large), автоматически
+            устанавливаемых при изменении ширины контейнера, в котором размещается
+            рекламный контент.
+        </p>
+        <p class="content__text chv">
+            Другой ключевой характеристикой плеера является наличие визуальных
+            эффектов, призванных в той или иной степени преодолеть феномен
+            "рекламной слепоты", при котором потребитель не воспринимает (не видит
+            и не обращает внимание) определенную рекламу или рекламный формат,
+            даже при непосредственном контакте с ними. Обусловлен этот феномен
+            привыканием к определенному формату и типу рекламы, устареванием
+            рекламных носителей. Один из наиболее заметных эффектов - вынос
+            рекламного блока из основного контента в нижний угол экрана при
+            скроллинге страницы, в результате которого реклама уходит из области
+            видимости более чем на 50%. Одновременно на web-странице может
+            независимо работать несколько экземпляров плеера AdMan 3, обеспечивая
+            показ рекламы в более чем одном контейнере.
+        </p>
+        <h3 class="content__video-dscr">Режимы работы AdMan 3</h3>
+        <div id="nr-ad2"></div>
+        <p class="content__text">
+            Хотя изначально плеер AdMan 3 создавался для размещения рекламы в
+            режиме inpage, к настоящему времени возможности плеера существенно
+            расширены, обеспечена работа и в других режимах. Это позволяет
+            использовать один продукт для решения множества разноплановых задач.
+        </p>
+        <p class="content__text">
+            Важной характеристикой плеера является автоматическая адаптация
+            рекламного баннера к любому размеру контейнера. Подбирается вариант
+            размещения баннера, максимально эффективно использующий
+            предоставленное пространство. При этом также обеспечивается
+            динамическое изменение размеров рекламного баннера в случае изменения
+            размеров целевого контейнера.
+        </p>
+        <p class="content__text">
+            Во все режимах работы плеер автоматически отправляет статистику о
+            показе рекламы (начало показа, прохождение контрольных точек,
+            завершение показа и т.д.) и взаимодействии пользователя с рекламой
+            (клик, вкл/откл звука, пропуск, повтор и т.д.). При выходе рекламы из
+            области видимости происходит остановка ее показа. Благодаря этой
+            особенности архитектуры плеера все досмотры происходят в области
+            видимости пользователя, что обеспечивает высокое качество контакта.
+        </p>
+        <h4 class="content__subtitle">Режим inpage (outstream)</h4>
+        <p class="content__text">
+            В этом режиме при размещении плеера на веб-странице указывается
+            контейнер с основным контентом, в котором будет размещена реклама. При
+            этом не нужно вносить никаких изменений в верстку страницы, создавать
+            специальный рекламный блок, выделять под него место. Достаточно
+            указать корневой контейнер с основным контентом страницы и плеер
+            самостоятельно проанализирует его содержание и размеры, создаст в нем
+            htm-элемент, установит для него подходящие размеры, выведет там
+            рекламу и будет ожидать ее попадания в область видимости для начала
+            показа. Визуально контент на странице как бы раздвигается (по
+            умолчанию примерно в середине).
+        </p>
+        <p class="content__text">
+            После показа рекламный блок будет плавно свернут, а созданный
+            html-элемент удален со страницы, которая вернется в первоначальный
+            вид. Таким образом, реклама размещается в центре редакционного
+            контента и начинает воспроизводиться в тот момент, когда более 50%
+            плеера находится на экране.
+        </p>
+        <h4 class="content__subtitle">Режим overlay</h4>
+        <p class="content__text">
+            Принципиальное отличие этого режима от рассмотренного выше режима
+            inpage состоит в том, что раздвигания контента на странице не
+            происходит. Вместо этого показ рекламы осуществляется поверх
+            содержимого указанного контейнера. Имеющиеся в контейнере элементы
+            оказываются под рекламным блоком. В случае несовпадения формата
+            контейнера и рекламного баннера образуются вертикальные или
+            горизонтальные поля, для которых по умолчанию устанавливается цвет
+            фона, соответствующий фону целевого контейнера. Если же такой фон не
+            установлен, последовательно просматриваются все родители целевого
+            контейнера для поиска установленного фона, вплоть до корневого
+            элемента. Если цвет фона не установлен ни для одного контейнера в
+            иерархии, используется белый фон. Прозрачные цвета преобразуются в
+            аналогичный непрозрачный цвет (из расчета белого фона). Таким образом,
+            вывод рекламы в режиме overlay максимально комфортен для пользователя.
+            После показа рекламы контейнер плеера удаляется и основной контент
+            доступен для просмотра пользователем.
+        </p>
+        <h4 class="content__subtitle">Режим instream</h4>
+        <p class="content__text">
+            Помимо показа рекламы в контенте web-страницы, плеер Adman 3 также
+            предоставляет возможность показа рекламы при просмотре видео. Для
+            этого достаточно указать в качестве целевого контейнера html-элемент
+            video. Показ рекламы в базовом видео может происходить в нескольких
+            случаях - при начале просмотра видео, при паузе, при окончании, в ходе
+            просмотра. В каждом указанном случае может быть показано несколько
+            рекламных баннеров различного типа (видео, html-баннер, VideoMotion и
+            т.д.). При этом показ рекламы осуществляется в редиме overlay, где в
+            качестве целевого контейнера рассматривается не сам контейнер в видео,
+            а его родительский контейнер, что позволяет расширить область рекламы
+            за счет вспомогательных блоков. Если требуется ограничить размер
+            рекламы границами видео, то достаточно обернуть его во вспомогательный
+            html-элемент.
+        </p>
+        <h4 class="content__subtitle">Режим SDK</h4>
+        <p class="content__text">
+            Принципиальное отличие режима SDK от рассмотренных выше состоит в
+            способе управления показом рекламы. Если в режимах inpage и instream
+            старт показа рекламы (и последующее удаление контейнера плеера после
+            завершения показа) происходит автоматически при наступлении
+            определенного события (попадание рекламы в область видимости,
+            определенный момент или включение паузы при просмотре видео), то в
+            режиме SDK запуск показа рекламы осуществляется программно вызовом
+            метода экземпляра плеера. Такой подход может быть использован в
+            сложных рекламных продуктах или других случаях.
+        </p>
+
+        <input type="text" name="test" />
+    </div>
+</section>
+
+<script>
+    (function (a, b, c, d, e, f, g, h) {
+        g = b.createElement(c);
+        g.src = d;
+        g.async = !0;
+        h = b.getElementsByTagName(c)[0];
+        h.parentNode.insertBefore(g, h);
+        const func = function () {
+            this.push(Array.prototype.slice.apply(arguments));
+        };
+        for (let i = f.length; i--; ) a[e[i]] = func.bind((a[f[i]] = []));
+    })(
+        window,
+        document,
+        "script",
+        "https://ad.mail.ru/static/vk-adman.js",
+        ["AdManPlayer", "AdManSDK"],
+        ["_AdManPlayerInit", "_AdManSDKInit"]
+    );
+</script>
+<script>
+    console.log('!!!!! config', config)
+
+    AdManPlayer({
+        container: 'content-container',
+        slot: 1239250,
+        // debug: true,
+        iframe: false,
+        initMode: "base",
+        theme: "sphere",
+        onError: () => {
+            console.log("AdMan error");
+            window.postMessage("AdError", "*");
+        },
+        onReady: () => {
+            console.log("AdMan ready");
+            window.postMessage("AdLoaded", "*");
+        },
+        onStarted: () => {
+            console.log("AdMan started");
+            window.postMessage("AdStarted", "*");
+        },
+        onPlayed: () => {
+            console.log("AdMan played");
+        },
+        onPaused: () => {
+            console.log("AdMan paused");
+        },
+        onClicked: () => {
+            console.log("AdMan clicked");
+        },
+        onCompleted: () => {
+            console.log("AdMan completed");
+            window.postMessage("AdVideoComplete", "*");
+        },
+        onClosed: () => {
+            console.log("AdMan closed");
+            window.postMessage("AdVideoComplete", "*");
+        },
+        onSkipped: () => {
+            console.log("AdMan skipped");
+        },
+        ...config,
+    });
+</script>
+</body>
+</html>
