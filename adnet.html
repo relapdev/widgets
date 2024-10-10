@@ -8,6 +8,8 @@
 
 <form style="margin-bottom: 20px">
     <input type="text" name="slot_id" placeholder="slot id" id="slotID" />
+    <input type="text" name="width" placeholder="width" id="widthInput" />
+    <input type="text" name="height" placeholder="height" id="heightInput" />
     <button id="apply">Apply</button>
 </form>
 
@@ -17,9 +19,13 @@
     (function() {
         const searchParams = new URLSearchParams(document.location.search);
         const slotId = searchParams.get('slot_id');
+        const width = searchParams.get('width');
+        const height = searchParams.get('height');
 
         const root = document.querySelector('#root');
         const slotIDInput = document.querySelector('#slotID');
+        const widthInput = document.querySelector('#widthInput');
+        const heightInput = document.querySelector('#heightInput');
 
         if (!slotId) {
             root.innerHTML = 'Enter slot id';
@@ -27,14 +33,23 @@
         }
 
         slotIDInput.value = slotId;
+        widthInput.value = width;
+        heightInput.value = height;
+
+        const widthValue = width ? width.replace('px', '') + 'px' : '300px';
+        const heightValue = height ? height.replace('px', '') + 'px' : '250px'
 
         const ins = document.createElement('ins');
 
         ins.className = 'mrg-tag';
-        ins.style = {display: 'inline-block', textDecoration: 'none'};
+        ins.style.display = 'inline-block';
+        ins.style.textDecoration = 'none';
+        ins.style.width = widthValue;
+        ins.style.height = heightValue;
+
         ins.dataset.adClient = `ad-${slotID}`;
         ins.dataset.adSlot = slotId;
-        ins.dataset.adQuery = 'test-mode=1';
+        // ins.dataset.adQuery = 'test-mode=1';
 
 
         const script = document.createElement('script');
